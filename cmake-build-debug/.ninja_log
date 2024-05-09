@@ -1,0 +1,25 @@
+# ninja log v5
+13	2226	1715190740107616296	CMakeFiles/SPH.dir/Shader/src/Shader.cpp.o	f04a1600af9e34c8
+1792	3333	1715190741226981990	CMakeFiles/SPH.dir/Math/Matrix/src/Matrix4.cpp.o	3cbe57c40e2eb360
+1851	3319	1715195342723996400	SPH	bac009407ed34709
+1826	3295	1715190741184337470	CMakeFiles/SPH.dir/Math/Matrix/src/Matrix3.cpp.o	afaa9f0bd767e38a
+13	1650	1715194772764161058	CMakeFiles/SPH.dir/Renderer/src/Window.cpp.o	186d35de8afc530e
+1	148	1715239497220251536	build.ninja	22cf5d827f9573fe
+13	1850	1715195341256058831	CMakeFiles/SPH.dir/Renderer/src/Particle.cpp.o	d4a1432bbc0b8229
+2226	3498	1715190741390208540	CMakeFiles/SPH.dir/Math/Matrix/src/Matrix2.cpp.o	22d59ba8e824b268
+1666	3270	1715190741161735782	CMakeFiles/SPH.dir/Math/Rotation/src/Quaternion.cpp.o	4843c438e4d0a450
+14	1671	1715190739540358293	CMakeFiles/SPH.dir/Renderer/src/Camera.cpp.o	44af8d93fc55ab46
+1671	3178	1715190741066540966	CMakeFiles/SPH.dir/Math/Point/src/Point4.cpp.o	fc2858b6c289ec90
+1677	3161	1715190741047496309	CMakeFiles/SPH.dir/Math/Point/src/Point2.cpp.o	ac999bee2f978780
+16	1676	1715190739550734836	CMakeFiles/SPH.dir/Math/Versor/src/Versor2.cpp.o	6bfb75f32f7ca8ce
+12	912	1715190738800248124	CMakeFiles/SPH.dir/Includes/glad/src/glad.c.o	e6b5ef2ec1db996f
+17	1826	1715190739702117070	CMakeFiles/SPH.dir/Math/Vector/src/Vector3.cpp.o	63707250f2f73a95
+14	2902	1715190740787438260	CMakeFiles/SPH.dir/Physics/src/SpatialGrid.cpp.o	1411b289c4fc302f
+14	1903	1715195285391764165	CMakeFiles/SPH.dir/Physics/src/PhysicsEngine.cpp.o	80f79005aac98c74
+913	2635	1715190740518620735	CMakeFiles/SPH.dir/Math/Vector/src/Vector2.cpp.o	23051681c3a093d5
+13	2412	1715190740294986338	CMakeFiles/SPH.dir/Renderer/src/ParticleEmitter.cpp.o	b821d4fac6406541
+14	1933	1715194739221460154	CMakeFiles/SPH.dir/main.cpp.o	ef2f00bdb5e96c0c
+16	1791	1715190739668582170	CMakeFiles/SPH.dir/Math/Vector/src/Vector4.cpp.o	4c1d721e3781e7b9
+15	1674	1715190739545604115	CMakeFiles/SPH.dir/Math/Versor/src/Versor4.cpp.o	915ab942f16638f
+15	1665	1715190739541198146	CMakeFiles/SPH.dir/Math/Versor/src/Versor3.cpp.o	7b261c89af5e8834
+1674	3173	1715190741061844762	CMakeFiles/SPH.dir/Math/Point/src/Point3.cpp.o	ead789afd43f99d9

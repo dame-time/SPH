@@ -1,0 +1,637 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "SPH"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_libraries",
+			"target_compile_options",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 59,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 56,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 9,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -std=gnu++17 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk -fcolor-diagnostics"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-O3"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-march=native"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-flto"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-funroll-loops"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-finline-functions"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-fno-omit-frame-pointer"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-fno-strict-aliasing"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-fno-rtti"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-fno-stack-protector"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Includes/glad/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Renderer"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Physics"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Shader"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math/Vector"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math/Matrix"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math/Rotation"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math/Versor"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math/Point"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "/usr/local/include"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "17"
+			},
+			"sourceIndexes" : 
+			[
+				4,
+				5,
+				6,
+				10,
+				11,
+				12,
+				14,
+				19,
+				20,
+				21,
+				25,
+				26,
+				27,
+				30,
+				31,
+				37,
+				38,
+				39,
+				40,
+				42,
+				44
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk -fcolor-diagnostics"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-O3"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-march=native"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-flto"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-funroll-loops"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-finline-functions"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-fno-omit-frame-pointer"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-fno-strict-aliasing"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-fno-rtti"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "-fno-stack-protector"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Includes/glad/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Renderer"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Physics"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Shader"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math/Vector"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math/Matrix"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math/Rotation"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math/Versor"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/davidepaollilo/Workspaces/C++/SPH/Math/Point"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "/usr/local/include"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				43
+			]
+		}
+	],
+	"id" : "SPH::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/usr/local/lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-Xlinker -framework -Xlinker OpenGL",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-Xlinker -framework -Xlinker OpenGL",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "/usr/local/lib/libglfw.3.3.dylib",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "SPH",
+	"nameOnDisk" : "SPH",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				7,
+				8,
+				9,
+				13,
+				15,
+				16,
+				17,
+				18,
+				22,
+				23,
+				24,
+				28,
+				29,
+				32,
+				33,
+				34,
+				35,
+				36,
+				41
+			]
+		},
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				4,
+				5,
+				6,
+				10,
+				11,
+				12,
+				14,
+				19,
+				20,
+				21,
+				25,
+				26,
+				27,
+				30,
+				31,
+				37,
+				38,
+				39,
+				40,
+				42,
+				43,
+				44
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"path" : "Math/Math.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Matrix/Matrix2.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Matrix/Matrix3.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Matrix/Matrix4.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Matrix/src/Matrix2.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Matrix/src/Matrix3.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Matrix/src/Matrix4.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Point/Point2.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Point/Point3.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Point/Point4.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Point/src/Point2.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Point/src/Point3.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Point/src/Point4.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Rotation/Quaternion.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Rotation/src/Quaternion.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Scalar.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Vector/Vector2.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Vector/Vector3.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Vector/Vector4.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Vector/src/Vector2.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Vector/src/Vector3.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Vector/src/Vector4.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Versor/Versor2.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Versor/Versor3.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Math/Versor/Versor4.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Versor/src/Versor2.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Versor/src/Versor3.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Math/Versor/src/Versor4.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Physics/PhysicsEngine.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Physics/SpatialGrid.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Physics/src/PhysicsEngine.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Physics/src/SpatialGrid.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Renderer/BoundingBox.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Renderer/Camera.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Renderer/Particle.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Renderer/ParticleEmitter.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Renderer/Window.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Renderer/src/Camera.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Renderer/src/Particle.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Renderer/src/ParticleEmitter.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Renderer/src/Window.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Shader/Shader.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Shader/src/Shader.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "Includes/glad/src/glad.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "main.cpp",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "EXECUTABLE"
+}
