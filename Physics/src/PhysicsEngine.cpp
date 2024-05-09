@@ -2,8 +2,8 @@
 #include "../PhysicsEngine.hpp"
 
 PhysicsEngine::PhysicsEngine(ParticleEmitter* pe) {
-	bounds.min = Math::Vector3(-30, -30, -10);
-	bounds.max = Math::Vector3(30, 30, 10);
+	bounds.min = Math::Vector3(-20, -20, -10);
+	bounds.max = Math::Vector3(20, 20, 10);
 	
 	particleEmitter = pe;
 	
@@ -15,7 +15,7 @@ PhysicsEngine::PhysicsEngine(ParticleEmitter* pe) {
 PhysicsEngine::~PhysicsEngine() = default;
 
 void PhysicsEngine::Update() {
-	const static Math::Scalar DT = 0.0125;
+	const static Math::Scalar DT = 0.015;
 	const static Math::Scalar restitution = 0.85;
 	
 	ComputeDensityPressureOverParticles();
@@ -59,13 +59,12 @@ void PhysicsEngine::ComputeDensityPressureOverParticles() {
 		
 		particle->density = 0.0;
 		for (const auto& neighbor : neighbors) {
-			Math::Vector3 r_ij_3D = (particle->position - neighbor->position);
-			auto r_ij = Math::Vector2(r_ij_3D[0], r_ij_3D[1]);
+			Math::Vector3 r_ij = (particle->position - neighbor->position);
 			
-			double r_ij_sq = r_ij.squareMagnitude();
+			Math::Scalar r_ij_sq = r_ij.squareMagnitude();
 			
 			if (r_ij_sq <= HSQ && r_ij_sq >= 0.0) {
-				particle->density += neighbor->mass * POLY6 * std::pow(HSQ - r_ij_sq, 3.0);
+				particle->density += neighbor->mass * Poly6Kernel(r_ij_sq);
 			}
 		}
 		particle->pressure = GAS_CONST * (particle->density - REST_DENS);
@@ -97,22 +96,22 @@ void PhysicsEngine::ComputeForcesOverParticles() {
 			if (pi.get() == pj) continue;
 
 			Math::Vector3 r_ij = pj->position - pi->position;
-			double r_ij_mag = r_ij.magnitude();
+			Math::Scalar r_ij_mag = r_ij.magnitude();
+			
+			auto spikyGrad = GradientSpikyKernel(r_ij);
 
 			if (r_ij_mag <= H && r_ij_mag >= 0) {
-				pressure += -r_ij.normalized() * pj->mass * (pi->pressure + pj->pressure) / (2. * pj->density) *
-				            SPIKY_GRAD * std::pow(H - r_ij_mag, 3.);
+				pressure += spikyGrad * pj->mass * (pi->pressure + pj->pressure) / (2.0 * pj->density);;
 				
 				viscosity += pj->viscosity * pj->mass * (pj->velocity - pi->velocity) / pj->density *
-				             VISC_LAP * (H - r_ij_mag);
+						ViscosityLaplacianKernel(r_ij_mag);
 				
 				bool shouldEvaluateSurfaceTension = pj->gradientSmoothedColorField.magnitude() > 0.05;
-				Math::Vector2 normalized_n_i = pj->gradientSmoothedColorField.normalized();
+				Math::Vector3 normalized_n_i = pj->gradientSmoothedColorField.normalized();
 				Math::Scalar k = SURFACE_TENSION_COEFFICIENT * pj->curvature;
-				Math::Vector2 surfaceTension2D = Math::Vector2(k * normalized_n_i[0], k * normalized_n_i[1]);
 
 				if (shouldEvaluateSurfaceTension)
-					surfaceTension += Math::Vector3(surfaceTension2D[0], surfaceTension2D[1], 0);
+					surfaceTension += (normalized_n_i * k);
 			}
 		}
 		
@@ -129,7 +128,7 @@ void PhysicsEngine::ComputeSurfaceTensionOverParticles() {
 		spatialGrid->Insert(particle.get());
 	
 	for (auto& pi : particles) {
-		pi->gradientSmoothedColorField = Math::Vector2();
+		pi->gradientSmoothedColorField = Math::Vector3();
 		pi->laplacianSmoothedColorField = 0.0;
 		
 		GridCoord cellIndex = spatialGrid->GetCellIndex(pi->position);
@@ -143,11 +142,10 @@ void PhysicsEngine::ComputeSurfaceTensionOverParticles() {
 		for (const auto& pj : neighbors) {
 			if (pi.get() == pj) continue;
 			
-			Math::Vector3 r_ij_3D = (pi->position - pj->position);
-			auto r_ij = Math::Vector2(r_ij_3D[0], r_ij_3D[1]);
-			double r_ij_sq = r_ij.squareMagnitude();
+			Math::Vector3 r_ij = (pi->position - pj->position);
+			Math::Scalar r_ij_sq = r_ij.squareMagnitude();
 
-			Math::Vector2 grad_W_ij = GradientSpikyKernel(r_ij);
+			Math::Vector3 grad_W_ij = GradientSpikyKernel(r_ij);
 			
 			Math::Scalar constant = pj->mass / pj->density;
 			pi->gradientSmoothedColorField += grad_W_ij * constant;
@@ -161,78 +159,90 @@ void PhysicsEngine::ComputeSurfaceTensionOverParticles() {
 	}
 }
 
-Math::Vector2 PhysicsEngine::GradientSpikyKernel(const Math::Vector2& r_ij) const {
+Math::Scalar PhysicsEngine::Poly6Kernel(Math::Scalar r2) const {
+	if (r2 <= HSQ && r2 >= 0.0)
+	{
+		Math::Scalar diff = HSQ - r2;
+		return POLY6 * std::pow(diff, 3);
+	} else
+		return 0.0;
+}
+
+Math::Scalar PhysicsEngine::ViscosityLaplacianKernel(Math::Scalar r) const {
+	if (r > 0.0 && r < H)
+		return VISC_LAP * (H - r);
+	else
+		return 0.0;
+}
+
+Math::Vector3 PhysicsEngine::GradientSpikyKernel(const Math::Vector3& r_ij) const {
 	auto r = r_ij.magnitude();
 	
 	if (r > 0.0 && r < H)
 		return r_ij.normalized() * SPIKY_GRAD * std::pow(H - r, 2);
 	else
-		return {0.0, 0.0};
+		return {0.0, 0.0, 0.0};
 }
 
 Math::Scalar PhysicsEngine::LaplacianPoly6Kernel(Math::Scalar r2) const {
-	const double POLY6_LAPLACIAN_COEFF = 24.0 / (M_PI * std::pow(H, 8));
+	// Math::Scalar derivative of Poly6 kernel (adjusted for 3D)
+	const Math::Scalar POLY6_LAPLACIAN_COEFF = 315.0 / (64 * M_PI * std::pow(H, 9));
 	
-	if (r2 <= HSQ && r2 >= 0.0) {
-		double diff = HSQ - r2;
+	if (r2 <= HSQ && r2 >= 0.0)
+	{
+		Math::Scalar diff = HSQ - r2;
 		return POLY6_LAPLACIAN_COEFF * diff * (r2 - 3 * HSQ);
-	} else {
-		return 0.0;
 	}
+	else
+		return 0.0;
 }
 
-void PhysicsEngine::ApplyRepulsiveForce(const Math::Vector2& center, Math::Scalar radius, Math::Scalar strength) {
+void PhysicsEngine::ApplyRepulsiveForce(const Math::Vector3& center, Math::Scalar radius, Math::Scalar strength) {
 	auto particles = particleEmitter->GetParticles();
 	
 	for (auto& particle : particles) {
-		Math::Vector2 particlePosition2D = Math::Vector2(particle->position[0], particle->position[1]);
-		
-		Math::Vector2 displacement = particlePosition2D - center;
-		double distance = displacement.magnitude();
+		Math::Vector3 displacement = particle->position - center;
+		Math::Scalar distance = displacement.magnitude();
 		
 		if (distance < radius && distance > 0) {
-			Math::Vector2 outwardDirection = displacement / distance;
-			double attenuation = (radius - distance) / radius;
-			double repulsiveForce = strength * attenuation;
+			Math::Vector3 outwardDirection = displacement / distance;
+			Math::Scalar attenuation = (radius - distance) / radius;
+			Math::Scalar repulsiveForce = strength * attenuation;
 			
-			particle->velocity[0] += outwardDirection[0] * repulsiveForce;
-			particle->velocity[1] += outwardDirection[1] * repulsiveForce;
+			particle->velocity += outwardDirection * repulsiveForce;
 		}
 	}
 }
 
-void PhysicsEngine::ApplyAttractiveForce(const Math::Vector2& center, Math::Scalar radius, Math::Scalar strength) {
+void PhysicsEngine::ApplyAttractiveForce(const Math::Vector3& center, Math::Scalar radius, Math::Scalar strength) {
 	auto separationDistance = 1.25;
 	auto particles = particleEmitter->GetParticles();
 	
 	for (auto& particle : particles) {
-		Math::Vector2 particlePosition2D = Math::Vector2(particle->position[0], particle->position[1]);
-		
-		Math::Vector2 displacement = center - particlePosition2D;
-		double distanceToCenter = displacement.magnitude();
+		Math::Vector3 displacement = center - particle->position;
+		Math::Scalar distanceToCenter = displacement.magnitude();
 		
 		if (distanceToCenter < radius && distanceToCenter > 0) {
-			Math::Vector2 inwardDirection = displacement / distanceToCenter;
-			double attenuation = (radius - distanceToCenter) / radius;
-			double attractiveForce = strength * attenuation;
+			Math::Vector3 inwardDirection = displacement / distanceToCenter;
+			Math::Scalar attenuation = (radius - distanceToCenter) / radius;
+			Math::Scalar attractiveForce = strength * attenuation;
 			
-			particle->velocity[0] += inwardDirection[0] * attractiveForce;
-			particle->velocity[1] += inwardDirection[1] * attractiveForce;
+			particle->velocity += inwardDirection * attractiveForce;
 		}
 		
+		// Apply separation force to prevent clustering
 		for (auto& otherParticle : particles) {
 			if (particle == otherParticle) continue;
 			
-			Math::Vector2 otherPosition2D = Math::Vector2(otherParticle->position[0], otherParticle->position[1]);
-			Math::Vector2 displacementBetween = particlePosition2D - otherPosition2D;
-			double distanceBetween = displacementBetween.magnitude();
+			Math::Vector3 displacementBetween = particle->position - otherParticle->position;
+			Math::Scalar distanceBetween = displacementBetween.magnitude();
 			
+			// If particles are too close, apply separation force
 			if (distanceBetween > 0 && distanceBetween < separationDistance) {
-				Math::Vector2 separationDirection = displacementBetween / distanceBetween;
-				double separationForce = (separationDistance - distanceBetween) / separationDistance * strength;
+				Math::Vector3 separationDirection = displacementBetween / distanceBetween;
+				Math::Scalar separationForce = (separationDistance - distanceBetween) / separationDistance * strength;
 				
-				particle->velocity[0] += separationDirection[0] * separationForce;
-				particle->velocity[1] += separationDirection[1] * separationForce;
+				particle->velocity += separationDirection * separationForce;
 			}
 		}
 	}

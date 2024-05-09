@@ -20,19 +20,16 @@ class PhysicsEngine
 	
 		Math::Scalar boundsDamping;
 	
-		const Math::Scalar H = 1.2;		    // kernel radius
-		const Math::Scalar HSQ = H * H;	    // radius^2 for optimization
+		const Math::Scalar H = 1.125;
+		const Math::Scalar HSQ = H * H;
 		
-		// smoothing kernels defined in Müller and their gradients
-		// adapted to 2D per "SPH Based Shallow Water Simulation" by Solenthaler et al.
-		const Math::Scalar POLY6 = 4. / (M_PI * std::pow(H, 8.));
+		const Math::Scalar POLY6 = 315.0 / (64.0 * M_PI * std::pow(H, 9.0));
+		const Math::Scalar SPIKY_GRAD = -45.0 / (M_PI * std::pow(H, 6.0));
+		const Math::Scalar VISC_LAP = 45.0 / (M_PI * std::pow(H, 6.0));
 		
-		const Math::Scalar REST_DENS = 6.25;  // rest density
-		const Math::Scalar GAS_CONST = 2000.; // const for equation of state
+		const Math::Scalar REST_DENS = 2.25;
+		const Math::Scalar GAS_CONST = 3000.0;
 	
-		const Math::Scalar SPIKY_GRAD = -10. / (M_PI * std::pow(H, 5.));
-		const Math::Scalar VISC_LAP = 40. / (M_PI * std::pow(H, 5.));
-		
 		const Math::Vector3 G = Math::Vector3(0, -10.81, 0);
 		const Math::Scalar SURFACE_TENSION_COEFFICIENT = 0.07;
 		
@@ -40,8 +37,10 @@ class PhysicsEngine
 		void ComputeSurfaceTensionOverParticles();
 		void ComputeForcesOverParticles();
 		
-		[[nodiscard]] Math::Vector2 GradientSpikyKernel(const Math::Vector2& r_ij) const;
+		[[nodiscard]] Math::Vector3 GradientSpikyKernel(const Math::Vector3& r_ij) const;
 		[[nodiscard]] Math::Scalar LaplacianPoly6Kernel(Math::Scalar r2) const;
+		[[nodiscard]] Math::Scalar Poly6Kernel(Math::Scalar r2) const;
+		[[nodiscard]] Math::Scalar ViscosityLaplacianKernel(Math::Scalar r) const;
 	
 	public:
 		explicit PhysicsEngine(ParticleEmitter* particleEmitter);
@@ -51,8 +50,8 @@ class PhysicsEngine
 		
 		void Update ();
 		
-		void ApplyRepulsiveForce(const Math::Vector2& center, Math::Scalar radius, Math::Scalar strength);
-		void ApplyAttractiveForce(const Math::Vector2& center, Math::Scalar radius, Math::Scalar strength);
+		void ApplyRepulsiveForce(const Math::Vector3& center, Math::Scalar radius, Math::Scalar strength);
+		void ApplyAttractiveForce(const Math::Vector3& center, Math::Scalar radius, Math::Scalar strength);
 		
 		BoundingBox GetBounds()
 		{

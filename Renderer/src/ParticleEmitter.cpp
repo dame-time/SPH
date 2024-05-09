@@ -45,43 +45,42 @@ void ParticleEmitter::InitFromSampleParticle (int numParticles, const Particle &
 	}
 }
 
-void ParticleEmitter::InitDamBreak(int numParticles, const BoundingBox& bounds, const Math::Scalar& paddingX, const
-Math::Scalar& paddingY, const Math::Scalar& spacing)
-{
-	// Adjust the starting X and Y to account for padding
+void ParticleEmitter::InitDamBreak(int numParticles, const BoundingBox& bounds, const Math::Scalar& paddingX,
+                                   const Math::Scalar& paddingY, const Math::Scalar& paddingZ, const Math::Scalar& spacing) {
 	Math::Scalar startX = bounds.min.coordinates.x + paddingX;
 	Math::Scalar startY = bounds.min.coordinates.y + paddingY;
+	Math::Scalar startZ = bounds.min.coordinates.z + paddingZ;
 	
-	// Calculate the ending positions accounting for padding
 	Math::Scalar endX = bounds.max.coordinates.x - paddingX;
 	Math::Scalar endY = bounds.max.coordinates.y - paddingY;
+	Math::Scalar endZ = bounds.max.coordinates.z - paddingZ;
 	
-	// Calculate the number of particles that can fit within the padded area
 	int particlesX = static_cast<int>((endX - startX) / spacing);
 	int particlesY = static_cast<int>((endY - startY) / spacing);
+	int particlesZ = static_cast<int>((endZ - startZ) / spacing);
 	
-	// Limit the total number of particles to the number specified
-	int totalParticles = std::min(numParticles, particlesX * particlesY);
+	int totalParticles = std::min(numParticles, particlesX * particlesY * particlesZ);
 	
-	// We may have to adjust the start position if we cannot fit the exact number of particles
-	// Redistribute the remaining space after fitting the particles as additional padding
 	startX += (endX - startX - particlesX * spacing) / 2;
 	startY += (endY - startY - particlesY * spacing) / 2;
+	startZ += (endZ - startZ - particlesZ * spacing) / 2;
 	
-	for (int i = 0; i < particlesX; ++i)
-	{
-		for (int j = 0; j < particlesY; ++j)
-		{
-			if(totalParticles <= 0) break;
+	for (int i = 0; i < particlesX; ++i) {
+		for (int j = 0; j < particlesY; ++j) {
+			for (int k = 0; k < particlesZ; ++k) {
+				if (totalParticles <= 0) break;
+				
+				Particle newParticle = Particle();
+				newParticle.position = Math::Vector3(startX + i * spacing, startY + j * spacing, startZ + k * spacing);
+				this->AddParticle(newParticle);
+				
+				--totalParticles;
+			}
 			
-			Particle newParticle = Particle();
-			newParticle.position = Math::Vector3(startX + i * spacing, startY + j * spacing, 0);
-			this->AddParticle(newParticle);
-			
-			--totalParticles;
+			if (totalParticles <= 0) break;
 		}
 		
-		if(totalParticles <= 0) break; // This will exit the outer loop if we have no more particles to place
+		if (totalParticles <= 0) break;
 	}
 }
 

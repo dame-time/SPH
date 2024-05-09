@@ -17,9 +17,9 @@ Particle::Particle() {
 	
 	this->pressure = 0;
 	this->density = 0;
-	this->mass = 1;
-	this->viscosity = 1.25;
-	this->gradientSmoothedColorField = Math::Vector2();
+	this->mass = 2;
+	this->viscosity = 4.25;
+	this->gradientSmoothedColorField = Math::Vector3();
 	this->laplacianSmoothedColorField = 0;
 	this->curvature = 0;
 }

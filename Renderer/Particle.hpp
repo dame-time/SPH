@@ -20,7 +20,7 @@ class Particle
 		Math::Scalar pressure;
 		Math::Scalar viscosity;
 		Math::Vector3 color;
-		Math::Vector2 gradientSmoothedColorField;
+		Math::Vector3 gradientSmoothedColorField;
 		Math::Scalar laplacianSmoothedColorField;
 		Math::Scalar curvature;
 	

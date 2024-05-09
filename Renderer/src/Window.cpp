@@ -83,14 +83,17 @@ Window::Window(Camera* mainCamera) : mainCamera(mainCamera) {
 			glfwSetWindowShouldClose(win, true);
 		
 		if (key == GLFW_KEY_R && action == GLFW_PRESS)
-			windowClassInstance->emitter->InitDamBreak(256,
+			windowClassInstance->emitter->InitDamBreak(15000,
 													   windowClassInstance->physicsEngine->GetBounds(),
 													   static_cast<int>(windowClassInstance->physicsEngine->GetBounds()
 													   .max
 													   .coordinates.x / 2),
 													   static_cast<int>(windowClassInstance->physicsEngine->GetBounds()
 													                                       .max
-													                                       .coordinates.y / 2),
+													                                       .coordinates.y / 1.25),
+													   static_cast<int>(windowClassInstance->physicsEngine->GetBounds()
+													                                       .max
+													                                       .coordinates.z / 2),
 													   1.1);
 		
 		if (key == GLFW_KEY_C && action == GLFW_PRESS)
@@ -99,17 +102,15 @@ Window::Window(Camera* mainCamera) : mainCamera(mainCamera) {
 	
 	GLFWmousebuttonfun mouseButtonCallback = [](GLFWwindow* win, int button, int action, int mods) {
 		auto windowClassInstance = static_cast<Window*>(glfwGetWindowUserPointer(win));
-		if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+		if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 			windowClassInstance->isMousePressed = true;
-		} else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+		else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
 			windowClassInstance->isMousePressed = false;
-		}
 		
-		if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+		if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
 			windowClassInstance->isRightMousePressed = true;
-		} else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
+		else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
 			windowClassInstance->isRightMousePressed = false;
-		}
 	};
 	
 	glfwSetMouseButtonCallback(window, mouseButtonCallback);
@@ -137,55 +138,43 @@ Window::Window(Camera* mainCamera) : mainCamera(mainCamera) {
 }
 
 void Window::OnMouseClick(const Math::Vector2& screenPos) {
-	// Convert screen coordinates to normalized device coordinates
-	double normalizedX = (2.0 * screenPos[0]) / viewportW - 1.0;
-	double normalizedY = 1.0 - (2.0 * screenPos[1]) / viewportH;
+	Math::Scalar normalizedX = (2.0 * screenPos[0]) / viewportW - 1.0;
+	Math::Scalar normalizedY = 1.0 - (2.0 * screenPos[1]) / viewportH;
 	
-	// Get the inverse of the camera projection matrix to convert to world coordinates
-	Math::Matrix4 inverseProj = mainCamera->getOrthographicMatrix(viewportW, viewportH, 0.1, 1000.0).inverse();
+	Math::Vector4 ndcCoords(normalizedX, normalizedY, -1.0, 1.0);
+	
+	Math::Matrix4 inverseProj = mainCamera->getPerspectiveMatrix(viewportW, viewportH, 0.1, 1000.0).inverse();
 	Math::Matrix4 inverseView = mainCamera->getViewMatrix().inverse();
 	
-	// Transform from NDC to world coordinates
-	Math::Vector4 ndcCoords(normalizedX, normalizedY, 0.0, 1.0);
-	Math::Vector4 worldCoords = inverseProj * ndcCoords;
-	worldCoords = inverseView * worldCoords;
+	Math::Vector4 cameraCoords = inverseProj * ndcCoords;
+	cameraCoords[3] = 1.0;
+	Math::Vector4 worldCoords = inverseView * cameraCoords;
 	
-	// Normalize by the W component
-	worldCoords[0] /= worldCoords[3];
-	worldCoords[1] /= worldCoords[3];
-	worldCoords[2] /= worldCoords[3];
+	Math::Vector3 worldPosition(worldCoords[0] / worldCoords[3], worldCoords[1] / worldCoords[3], worldCoords[2] / worldCoords[3]);
 	
-	// Call the ApplyRepulsiveForce function in PhysicsEngine
-	Math::Vector2 worldPosition(worldCoords[0], worldCoords[1]);
-	double radius = 5.0;   // Example radius
-	double strength = 5.0;  // Example force strength
+	Math::Scalar radius = 5.0;
+	Math::Scalar strength = 5.0;
 	
 	physicsEngine->ApplyRepulsiveForce(worldPosition, radius, strength);
 }
 
 void Window::OnRightMouseClick(const Math::Vector2& screenPos) {
-	// Convert screen coordinates to normalized device coordinates
-	double normalizedX = (2.0 * screenPos[0]) / viewportW - 1.0;
-	double normalizedY = 1.0 - (2.0 * screenPos[1]) / viewportH;
+	Math::Scalar normalizedX = (2.0 * screenPos[0]) / viewportW - 1.0;
+	Math::Scalar normalizedY = 1.0 - (2.0 * screenPos[1]) / viewportH;
+
+	Math::Vector4 ndcCoords(normalizedX, normalizedY, -1.0, 1.0);
 	
-	// Get the inverse of the camera projection matrix to convert to world coordinates
-	Math::Matrix4 inverseProj = mainCamera->getOrthographicMatrix(viewportW, viewportH, 0.1, 1000.0).inverse();
+	Math::Matrix4 inverseProj = mainCamera->getPerspectiveMatrix(viewportW, viewportH, 0.1, 1000.0).inverse();
 	Math::Matrix4 inverseView = mainCamera->getViewMatrix().inverse();
 	
-	// Transform from NDC to world coordinates
-	Math::Vector4 ndcCoords(normalizedX, normalizedY, 0.0, 1.0);
-	Math::Vector4 worldCoords = inverseProj * ndcCoords;
-	worldCoords = inverseView * worldCoords;
+	Math::Vector4 cameraCoords = inverseProj * ndcCoords;
+	cameraCoords[3] = 1.0;
+	Math::Vector4 worldCoords = inverseView * cameraCoords;
 	
-	// Normalize by the W component
-	worldCoords[0] /= worldCoords[3];
-	worldCoords[1] /= worldCoords[3];
-	worldCoords[2] /= worldCoords[3];
+	Math::Vector3 worldPosition(worldCoords[0] / worldCoords[3], worldCoords[1] / worldCoords[3], worldCoords[2] / worldCoords[3]);
 	
-	// Call the ApplyRepulsiveForce function in PhysicsEngine
-	Math::Vector2 worldPosition(worldCoords[0], worldCoords[1]);
-	double radius = 5.0;   // Example radius
-	double strength = 5.0;  // Example force strength
+	Math::Scalar radius = 5.0;
+	Math::Scalar strength = 5.0;
 	
 	physicsEngine->ApplyAttractiveForce(worldPosition, radius, strength);
 }

@@ -7,7 +7,7 @@ int main() {
 	auto particleEmitter = new ParticleEmitter();
 	auto physicsEngine = new PhysicsEngine(particleEmitter);
 	
-	auto particleSolidShader = new Renderer::Shader
+	[[maybe_unused]] auto particleSolidShader = new Renderer::Shader
 			("/Users/davidepaollilo/Workspaces/C++/SPH/Shader/GLSL/sphere.vert",
 			 "/Users/davidepaollilo/Workspaces/C++/SPH/Shader/GLSL/sphere.frag");
 	auto particleBillboardShader = new Renderer::Shader
